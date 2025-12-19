@@ -1,0 +1,66 @@
+@startuml "Clínica Veterinária"
+
+entity Cliente {
+    *idCliente
+    nome
+    cpf
+    telefone
+    email
+    dataCadastro
+    observacoes
+}
+
+entity Animal {
+    *idAnimal
+    idCliente <<FK>>
+    especie
+    sexo
+    nome
+    raca
+    dataNascimento
+    peso
+    status
+    caracteristicas
+}
+
+entity Consulta {
+    *idConsulta
+    idAnimal <<FK>>
+    idVeterinario <<FK>>
+    dataConsulta
+    horaConsulta
+    tipoConsulta
+    examesComplementares
+    prescricao
+    observacoesClinicas
+}
+
+entity Veterinario {
+    *idVeterinario
+    cfmvVeterinario
+    nome
+    email
+    telefone
+    ativo
+    dataContratacao
+}
+
+entity Especialidade {
+    *idEspecialidade
+    nome
+    descricao
+}
+
+entity VeterinarioEspecialidade {
+    *idVeterinario <<FK>>
+    *idEspecialidade <<FK>>
+    
+}
+
+Cliente "1" -- "N" Animal : possui
+Animal "1" -- "N" Consulta : passa por
+Veterinario "1" -- "N" Consulta : atende
+Veterinario "1" -- "0..N" VeterinarioEspecialidade : possui
+Especialidade "1" -- "0..N" VeterinarioEspecialidade
+
+@enduml
