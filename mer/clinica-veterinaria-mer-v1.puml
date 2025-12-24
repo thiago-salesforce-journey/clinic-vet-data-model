@@ -57,7 +57,7 @@ entity VeterinarioEspecialidade {
     
 }
 
-Cliente "1" -- "N" Animal : possui
+Cliente "1" -- "0..N" Animal : possui
 Animal "1" -- "N" Consulta : passa por
 Veterinario "1" -- "N" Consulta : atende
 Veterinario "1" -- "0..N" VeterinarioEspecialidade : possui
