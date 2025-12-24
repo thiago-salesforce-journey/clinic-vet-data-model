@@ -1,67 +1,83 @@
-@startuml "Clínica Veterinária"
+@startuml
+title Modelo de Dados - Clínica Veterinária (Salesforce)
 
-entity Cliente {
-    *idCliente
-    nome
-    cpf
-    telefone
-    email
-    dataCadastro
-    observacoes
+' =========================
+' OBJETOS PADRÃO
+' =========================
+
+entity Account {
+  + Id : PK
+  --
+  Name
+  Status__c
 }
 
-entity Animal {
-    *idAnimal
-    idCliente <<FK>>
-    especie
-    sexo
-    nome
-    raca
-    dataNascimento
-    peso
-    status
-    caracteristicas
+entity Contact {
+  + Id : PK
+  --
+  FirstName
+  LastName
+  Email
+  Phone
+  CPF__c
+  CFMV__c
+  RecordTypeId
+  AccountId : FK
 }
 
-entity Consulta {
-    *idConsulta
-    idAnimal <<FK>>
-    idVeterinario <<FK>>
-    dataConsulta
-    horaConsulta
-    tipoConsulta
-    examesComplementares
-    prescricao
-    observacoesClinicas
+' =========================
+' OBJETOS CUSTOMIZADOS
+' =========================
+
+entity Animal__c {
+  + Id : PK
+  --
+  Nome__c
+  Especie__c
+  Raca__c
+  Sexo__c
+  DataNascimento__c
+  Status__c
+  Tutor__c : FK
 }
 
-entity Veterinario {
-    *idVeterinario
-    cfmvVeterinario
-    nome
-    email
-    telefone
-    ativo
-    dataContratacao
+entity Consulta__c {
+  + Id : PK
+  --
+  DataConsulta__c
+  TipoConsulta__c
+  StatusConsulta__c
+  Animal__c : FK
+  Veterinario__c : FK
 }
 
-entity Especialidade {
-    *idEspecialidade
-    nome
-    descricao
+entity Especialidade__c {
+  + Id : PK
+  --
+  Name
+  Descricao__c
 }
 
-entity VeterinarioEspecialidade {
-    *idVeterinario <<FK>>
-    *idEspecialidade <<FK>>
-    
+entity VeterinarioEspecialidade__c {
+  + Id : PK
+  --
+  Veterinario__c : FK
+  Especialidade__c : FK
 }
 
-Cliente "1" -- "N" Animal : possui
-Animal "1" -- "N" Consulta : passa por
-Veterinario "1" -- "N" Consulta : atende
-Veterinario "1" -- "0..N" VeterinarioEspecialidade : possui
-Especialidade "1" -- "0..N" VeterinarioEspecialidade
+' =========================
+' RELACIONAMENTOS
+' =========================
+
+Account "1" -- "0..N" Contact : possui
+
+Contact "1" -- "0..N" Animal__c : tutor
+
+Animal__c "1" -- "0..N" Consulta__c : possui
+
+Contact "1" -- "0..N" Consulta__c : veterinário
+
+Contact "1" -- "0..N" VeterinarioEspecialidade__c
+Especialidade__c "1" -- "0..N" VeterinarioEspecialidade__c
 
 @enduml
-
